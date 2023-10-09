@@ -1,0 +1,23 @@
+﻿@model GoogleAuth.MVC.ViewModels.RegisterVM
+
+@{
+    ViewData["Title"] = "GoogleRegister";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="GoogleRegister" asp-controller="Auth" method="post">
+    <div class="col-md-6">
+        <div>
+            <span>Username</span>
+            <input type="text" asp-for="Username" class="form-control"/>
+        </div>
+
+        <div>
+            <span>Email</span>
+            <input type="email" asp-for="Email" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary">Register</button>
+    </div>
+</form>
+

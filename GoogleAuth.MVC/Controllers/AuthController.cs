@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GoogleAuth.MVC.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -46,7 +47,43 @@ namespace GoogleAuth.MVC.Controllers
 
             if(user == null)
             {
+                //Google Register
+                return RedirectToAction("GoogleRegister", new { email });
+            }
 
+            return View();
+        }
+
+        public IActionResult GoogleRegister(string email)
+        {
+            RegisterVM registerVM=new RegisterVM();
+            registerVM.Email = email;
+
+            return View(registerVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GoogleRegister(RegisterVM registerVM)
+        {
+            var user = new IdentityUser
+            {
+                Email = registerVM.Email,
+            };
+
+            if (user.UserName == null)
+            {
+                user.UserName = user.Email;
+            }
+            else
+            {
+                user.UserName = registerVM.Username;
+            }
+
+            var result=await _signInManager.UserManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index","Home");
             }
 
             return View();
